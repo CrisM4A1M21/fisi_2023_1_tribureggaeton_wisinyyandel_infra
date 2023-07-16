@@ -1,0 +1,35 @@
+openapi: 3.0.3
+info:
+  title: API-UX - PRODUCTOS
+  description: |-
+    API de Gestión de Productos - Frontend
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000/ux-productos/servicio-al-cliente/v1
+tags:
+  - name: Producto
+    description: Operaciones sobre el producto
+paths:
+  /mostrar-productos:
+    get:
+      tags:
+        - Producto
+      summary: Mostrar productos
+      description: Obtiene la lista de productos para mostrar en la interfaz de usuario
+      operationId: getProducts
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Productos'
+        '405':
+          description: Entrada inválida
+      in: header
+

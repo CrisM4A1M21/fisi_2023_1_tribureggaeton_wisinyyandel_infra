@@ -1,0 +1,94 @@
+openapi: 3.0.3
+info:
+  title: API NE - GESTION DE COMPRAS
+  description: |-
+    API de Gestion de compras del 
+    Grupo Regaeton, Wisin y Yandel (API NE)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:3000/ne-productos/servicio-al-cliente/v1
+tags:
+  - name: Compra
+    description: Operaciones sobre la compra (API NE)
+    externalDocs:
+      description: Encuentra mas
+      url: http://swagger.io
+paths:
+  /compra:
+    post:
+      tags:
+        - Compra
+      summary: Guardar una compra (API NE)
+      description: Permite crear y guardar una nueva compra
+      operationId: addCompra
+      requestBody:
+        description: Guardar una nueva compra en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Compra'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Compra'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Compra'
+        required: true
+      responses:
+        '200':
+          description: Operacion Exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Compra'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Compra'
+        '405':
+          description: Entrada Invalida
+      security:
+        - store_auth:
+            - write:compras
+            - read:compras
+
+components:
+  schemas:
+    Compra:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        productoId:
+          type: integer
+          format: int64
+          example: 198772
+        cantidad:
+          type: integer
+          format: int32
+          example: 7
+        fechaCompra:
+          type: string
+          format: date-time
+        estado:
+          type: string
+          description: Estado de la compra
+          example: aprobado
+          enum:
+            - reservado
+            - aprobado
+            - entregado
+        completado:
+          type: boolean
+      xml:
+        name: compra

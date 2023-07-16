@@ -1,0 +1,234 @@
+openapi: 3.0.3
+info:
+  title: API-NE - GESTIÓN DE DATOS DE ENTREGAS
+  description: |-
+    API de Gestión de datos de entregas del 
+    Grupo Regaeton, Wisin y Yandel - Negocio y Backend
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:3000/ne-productos/servicio-al-cliente/v1
+tags:
+  - name: Entrega
+    description: Operaciones sobre la entrega
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /mostrar-entregas:
+    get:
+      tags:
+        - Entrega
+      summary: Mostrar entregas
+      description: Obtiene la lista de entregas disponibles
+      operationId: getEntregas
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entrega'
+        '405':
+          description: Entrada inválida
+
+  /guardar-entrega:
+    post:
+      tags:
+        - Entrega
+      summary: Guardar una entrega
+      description: Permite crear y guardar una nueva entrega
+      operationId: addEntrega
+      requestBody:
+        description: Crear una nueva entrega en la tienda
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Entrega'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Entrega'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Entrega'
+        required: true
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entrega'
+        '405':
+          description: Entrada inválida
+
+components:
+  schemas:
+    Entrega:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        productoId:
+          type: integer
+          format: int64
+          example: 198772
+        cantidad:
+          type: integer
+          format: int32
+          example: 7
+        fechaVenta:
+          type: string
+          format: date-time
+        estado:
+          type: string
+          description: Order Status
+          example: aprovado
+          enum:
+            - reservado
+            - aprovado
+            - entregado
+        completado:
+          type: boolean
+      xml:
+        name: entrega
+    Cliente:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100000
+        nombreusuario:
+          type: string
+          example: fehguy
+        direccion:
+          type: array
+          xml:
+            name: direccion
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Direccion'
+      xml:
+        name: cliente
+    Direccion:
+      type: object
+      properties:
+        calle:
+          type: string
+          example: 437 Lytton
+        ciudad:
+          type: string
+          example: Palo Alto
+        provincia:
+          type: string
+          example: CA
+        codigo postal:
+          type: string
+          example: '94301'
+      xml:
+        name: direccion
+    Categoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        nombre:
+          type: string
+          example: Verduras
+      xml:
+        name: categoria
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        nombreusuario:
+          type: string
+          example: theUser
+        Nombre:
+          type: string
+          example: Arian
+        Apellido:
+          type: string
+          example: Ticona
+        email:
+          type: string
+          example: Arian@email.com
+        contraseña:
+          type: string
+          example: '12345'
+        telefono:
+          type: string
+          example: '934044555'
+        estadoUsuario:
+          type: integer
+          description: User Status
+          format: int32
+          example: 1
+      xml:
+        name: usuario
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+      xml:
+        name: tag
+    Productos:
+      required:
+        - name
+        - photoUrls
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        nombre:
+          type: string
+          example: Ajinomoto
+        categoria:
+          $ref: '#/components/schemas/Categoria'
+        fotoUrls:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            type: string
+            xml:
+              name: photoUrl
+        tags:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        estado:
+          type: string
+          description: Estado de la entrega en la tienda
+          enum:
+            - disponible
+            - pendiente
+            - vendido
+      xml:
+        name: productos

@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: API-NE - PRODUCTOS
+  description: |-
+    API de Gestión de Productos - Backend
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://store3.swagger.io/api/v3
+tags:
+  - name: Producto
+    description: Operaciones sobre el producto
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /productos:
+    get:
+      tags:
+        - Producto
+      summary: Obtener productos
+      description: Obtiene la lista de productos desde la base de datos
+      operationId: getProductsNE
+      responses:
+        '200':
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Productos'
+        '405':
+          description: Entrada inválida
+
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        id_producto:
+          type: integer
+          format: int64
+          example: 10
+        nombre:
+          type: string
+          example: Producto1
+        precio_venta:
+          type: number
+          format: double
+          example: 9.99
+        stock:
+          type: integer
+          example: 100
+        fecha_venc:
+          type: string
+          format: date
+          example: '2023-12-31'
+        imagen:
+          type: string
+          example: /ruta/imagen.jpg
+        id_categoria:
+          type: integer
+          example: 1
+      xml:
+        name: producto
+
